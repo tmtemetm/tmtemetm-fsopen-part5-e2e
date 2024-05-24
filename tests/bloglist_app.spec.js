@@ -54,7 +54,37 @@ describe('Bloglist app', () => {
         url: 'http://localhost/playwright'
       })
 
-      await expect(page.getByText(/This is a new blog created by playwright Playwright/)).toBeVisible()
+      await expect(page.locator('.blog-list-item').getByText(/This is a new blog created by playwright/)).toBeVisible()
+    })
+
+    describe('and blogs exist', () => {
+      beforeEach(async ({ page }) => {
+        await createBlog(page, { title: 'Playwrigth blog 1', author: 'Playwright', url: 'http://localhost/playwright1' })
+        await createBlog(page, { title: 'Playwrigth blog 2', author: 'Playwright', url: 'http://localhost/playwright2' })
+        await createBlog(page, { title: 'Playwrigth blog 3', author: 'Playwright', url: 'http://localhost/playwright3' })
+      })
+
+      test('a blog can be liked', async ({ page }) => {
+        await page.locator('.blog-list-item')
+          .getByText(/Playwrigth blog 2/)
+          .getByRole('button', { name: 'View' })
+          .click()
+
+        const likesElement = page.locator('.blog-list-item')
+          .getByText(/Playwrigth blog 2/)
+          .locator('..')
+          .getByText(/Likes/)
+
+        await expect(likesElement).toContainText(/Likes: 0/)
+        await expect(likesElement).not.toContainText(/Likes: 1/)
+
+        await likesElement.getByRole('button', { name: 'Like' })
+          .click()
+        await likesElement.getByText(/Likes: 1/).waitFor()
+
+        await expect(likesElement).toContainText(/Likes: 1/)
+        await expect(likesElement).not.toContainText(/Likes: 0/)
+      })
     })
   })
 })
