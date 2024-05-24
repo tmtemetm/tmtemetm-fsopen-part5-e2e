@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
-const { loginWith } = require('./helper')
+const { loginWith, createBlog } = require('./helper')
 
 describe('Bloglist app', () => {
   beforeEach(async ({ page, request }) => {
@@ -39,6 +39,22 @@ describe('Bloglist app', () => {
       await expect(notificationElement).toHaveCSS('border-color', 'rgb(139, 0, 0)')
       await expect(notificationElement).toHaveCSS('color', 'rgb(139, 0, 0)')
       await expect(page.getByText(/Matti Luukkainen logged in/)).not.toBeVisible()
+    })
+  })
+
+  describe('When logged in', () => {
+    beforeEach(async ({ page }) => {
+      await loginWith(page, 'mluukkai', 'salainen')
+    })
+  
+    test('a new blog can be created', async ({ page }) => {
+      await createBlog(page, {
+        title: 'This is a new blog created by playwright',
+        author: 'Playwright',
+        url: 'http://localhost/playwright'
+      })
+
+      await expect(page.getByText(/This is a new blog created by playwright Playwright/)).toBeVisible()
     })
   })
 })
