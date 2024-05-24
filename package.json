@@ -1,0 +1,24 @@
+{
+  "name": "tmtemetm-fsopen-part5-e2e",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright show-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmtemetm/tmtemetm-fsopen-part5-e2e.git"
+  },
+  "author": "tmtemetm",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tmtemetm/tmtemetm-fsopen-part5-e2e/issues"
+  },
+  "homepage": "https://github.com/tmtemetm/tmtemetm-fsopen-part5-e2e#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "@types/node": "^20.12.12"
+  }
+}
